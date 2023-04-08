@@ -22,4 +22,10 @@ export const exampleRouter = createTRPCRouter({
   getSecretMessage: protectedProcedure.query(() => {
     return "you can now see this secret message!";
   }),
+  addExample: protectedProcedure.input(z.object({name: z.string()})).mutation(async ({ctx, input})=> {
+    const example = await ctx.prisma.example.create({data: {
+      name: input.name
+    }})
+    return example
+  })
 });
