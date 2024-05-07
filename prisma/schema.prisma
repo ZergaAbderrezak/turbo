@@ -11,14 +11,25 @@ datasource db {
     relationMode = "prisma"
 }
 
-model Example {
-    id        String   @id @default(cuid())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+// This is the Car table schema
+model Car {
+    id          String  @id @default(cuid())
+    make        String
+    model       String
+    year        Int
+    color       String
+    type        String
+    fuel        String
+    imageUrl    String?
+    pricePerDay Int
+    location    String
+    ownerId     String
+    owner       User    @relation(fields: [ownerId], references: [id])
+
+    @@index([ownerId])
 }
 
-// Necessary for Next auth
+// This is the Account table schema necessary for Next auth
 model Account {
     id                String  @id @default(cuid())
     userId            String
@@ -48,6 +59,7 @@ model Session {
     @@index([userId])
 }
 
+// This is the User table schema 
 model User {
     id            String    @id @default(cuid())
     name          String?
@@ -56,6 +68,7 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
+    cars          Car[]
 }
 
 model VerificationToken {
